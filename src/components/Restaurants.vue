@@ -10,7 +10,7 @@
                 v-for="restaurant, index of datasRestaurants.restaurants"
                 xs4
                 md3
-                v-bind:key="restaurant"
+                :key="restaurant._id"
               >
                 <app-restaurant
                   :id="restaurant._id"
@@ -18,6 +18,7 @@
                   :cuisine="restaurant.cuisine"
                   v-on:reload-restaurants="reload()"
                   :grades="restaurant.grades"
+                  :image="getRandomImage()"
                 ></app-restaurant>
               </v-flex>
             </v-layout>
@@ -44,6 +45,13 @@ export default {
     reload() {
       console.log("i'm reloading");
       this.$emit("reload-restaurants");
+    },
+    getRandomImage() {
+      var random = Math.round(
+        Math.random() * this.datasRestaurants.randomImages.length
+      );
+
+      return this.datasRestaurants.randomImages[random];
     }
   }
 };

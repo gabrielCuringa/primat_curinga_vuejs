@@ -4,7 +4,7 @@
       <!-- point d'entré -->
       <router-view
         v-on:reload-restaurants="reloadRestaurants()"
-        :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants}"
+        :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants, randomImages: randomImages}"
       ></router-view>
 
       <!--Footer-->
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Api from "./Api.js";
+import randomImagesApi from "./api/RandomImages.js";
 
 export default {
   name: "app",
@@ -32,7 +32,8 @@ export default {
     return {
       msg: "TP2 - Gabriel Curinga",
       restaurants: [],
-      nbRestaurants: 0
+      nbRestaurants: 0,
+      randomImages: []
     };
   },
   mounted() {
@@ -45,6 +46,20 @@ export default {
         .then(result => {
           this.restaurants = result.data;
           this.nbRestaurants = result.count;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      randomImagesApi
+        .images("restaurant", 50)
+        .then(imageResult => {
+          console.log(imageResult);
+
+          imageResult.data.result.items.forEach(item => {
+            this.randomImages.push(item.media);
+          });
+          //console.log(this.randomImages);
         })
         .catch(err => {
           console.log(err);

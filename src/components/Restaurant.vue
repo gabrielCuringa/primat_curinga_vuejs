@@ -7,6 +7,7 @@
         class="mx-auto"
         @click="goToDetail()"
       >
+        <v-img :src="image" aspect-ratio="2.75"></v-img>
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">{{name}}</h3>
@@ -39,7 +40,7 @@
 
 <script>
 export default {
-  props: ["id", "name", "cuisine", "grades"],
+  props: ["id", "name", "cuisine", "grades", "image"],
   data() {
     return {};
   },
@@ -57,6 +58,7 @@ export default {
         });
     },
     goToDetail() {
+      console.log(this.image);
       this.$router.push({
         name: "detail",
         params: {

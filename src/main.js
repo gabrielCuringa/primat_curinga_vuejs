@@ -10,7 +10,7 @@ import App from "./App.vue";
 import Restaurants from "./components/Restaurants.vue";
 import RestaurantDetail from "./components/RestaurantDetail.vue";
 import ErrorVue from "./components/Error.vue";
-import Api from "./Api";
+import Api from "./api/Api";
 
 //Global variable
 Vue.API = Vue.prototype.API = new Api();
