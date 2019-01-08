@@ -2,6 +2,8 @@
   <div>
     <p>Cette page n'existe pas</p>
   </div>
+  
+  
 </template>
 
 <script>
