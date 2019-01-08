@@ -12,7 +12,6 @@
       <l-marker :lat-lng="[48.866667, 2.333333]"></l-marker>
     </l-map>
   </div>
-  
 </template>
 
 <script>
@@ -36,15 +35,11 @@ export default {
     return {
       restaurant : {},
       url : "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-      
     };
   },
 };
 </script>
 
-/**
-scoped = ne se s'applique pas aux composants inclus
- */
 <style scoped>
 p {
   font-style: bold;
