@@ -1,14 +1,24 @@
 <template>
   <div id="app">
-    <!--<div>
-      <router-link to="/">Restaurants</router-link>
-      <router-link to="/home">Home</router-link>
-    </div>-->
     <v-app>
+      <!-- point d'entré -->
       <router-view
         v-on:reload-restaurants="reloadRestaurants()"
         :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants}"
       ></router-view>
+
+      <!--Footer-->
+      <v-footer dark height="auto">
+        <v-card class="flex" flat tile>
+          <v-card-title class="teal">
+            <strong class="subheading">Projet dans le cadre du module Web, encadré par M.Buffa</strong>
+          </v-card-title>
+
+          <v-card-actions class="grey darken-3 justify-center">
+            <strong>10 janvier 2019 — Jeremy Primat & Gabriel Curinga - M1 MIAGE</strong>
+          </v-card-actions>
+        </v-card>
+      </v-footer>
     </v-app>
   </div>
 </template>
@@ -57,6 +67,7 @@ export default {
 h1,
 h2 {
   font-weight: normal;
+  background-color: #0e0e0e;
 }
 
 ul {

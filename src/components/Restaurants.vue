@@ -1,22 +1,30 @@
 <template>
   <div>
     <p>Nombre de restaurants : {{datasRestaurants.nbRestaurants}}</p>
-    <v-container grid-list-md text-xs-center>
-      <v-layout row wrap>
-        <v-flex
-          v-for="restaurant, index of datasRestaurants.restaurants"
-          xs4
-          v-bind:key="restaurant._id"
-        >
-          <app-restaurant
-            :id="restaurant._id"
-            :name="restaurant.name"
-            :cuisine="restaurant.cuisine"
-            v-on:reload-restaurants="reload()"
-          ></app-restaurant>
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <v-layout>
+      <v-flex>
+        <v-card>
+          <v-container v-bind="{ [`grid-list-xl`]: true }" fluid>
+            <v-layout row wrap>
+              <v-flex
+                v-for="restaurant, index of datasRestaurants.restaurants"
+                xs4
+                md3
+                v-bind:key="restaurant"
+              >
+                <app-restaurant
+                  :id="restaurant._id"
+                  :name="restaurant.name"
+                  :cuisine="restaurant.cuisine"
+                  v-on:reload-restaurants="reload()"
+                  :grades="restaurant.grades"
+                ></app-restaurant>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 

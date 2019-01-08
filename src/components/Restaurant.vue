@@ -12,6 +12,20 @@
             <h3 class="headline mb-0">{{name}}</h3>
             <div>{{cuisine}}</div>
           </div>
+          <div class="d-flex">
+            <v-rating
+              :value="parseFloat(gradeAverage())"
+              color="amber"
+              dense
+              half-increments
+              readonly
+              size="14"
+            ></v-rating>
+            <div class="ml-2 grey--text text--darken-2">
+              <span>{{gradeAverage()}}</span>
+              <span>({{ grades.length }})</span>
+            </div>
+          </div>
         </v-card-title>
 
         <v-card-actions>
@@ -25,7 +39,7 @@
 
 <script>
 export default {
-  props: ["id", "name", "cuisine"],
+  props: ["id", "name", "cuisine", "grades"],
   data() {
     return {};
   },
@@ -49,6 +63,13 @@ export default {
           id: this.id
         }
       });
+    },
+    gradeAverage() {
+      var total = 0;
+      this.grades.forEach(element => {
+        total = total + parseInt(element.score);
+      });
+      return (total / this.grades.length / 4).toFixed(2);
     }
   }
 };
