@@ -62,7 +62,8 @@ export default {
       this.$router.push({
         name: "detail",
         params: {
-          id: this.id
+          id: this.id,
+          image: this.image
         }
       });
     },

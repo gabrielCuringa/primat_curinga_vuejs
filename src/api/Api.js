@@ -30,6 +30,30 @@ export default class {
     });
   }
 
+  getRestaurantById(id) {
+    console.log("dans get restaurant by id");
+    return new Promise((resolve, reject) => {
+      let urlRestaurants = "http://localhost:8080/api/restaurants/" + id;
+
+      fetch(urlRestaurants, {
+        method: "get"
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          let returnData = {
+            msg: json.msg,
+            restaurant: json.restaurant
+          };
+          resolve(returnData);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   deleteRestaurant(id) {
     console.log("dans delete restaurant");
     return new Promise((resolve, reject) => {

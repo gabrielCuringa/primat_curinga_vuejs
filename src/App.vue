@@ -30,7 +30,6 @@ export default {
   name: "app",
   data() {
     return {
-      msg: "TP2 - Gabriel Curinga",
       restaurants: [],
       nbRestaurants: 0,
       randomImages: []
