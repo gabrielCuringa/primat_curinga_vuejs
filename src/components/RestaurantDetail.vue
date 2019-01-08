@@ -1,7 +1,12 @@
 <template>
-  <div id="map">  
-    <p>Nom: {{$route.params.id}}</p>
-    <v-img :src="$route.params.image"></v-img>
+  <div>
+    <v-parallax dark :src="image">
+      <v-layout align-center column justify-center>
+        <h1 class="display-2 font-weight-thin mb-3">{{restaurant.name}}</h1>
+        <h1 class="subheading">{{restaurant.cuisine}}</h1>
+        <p>{{restaurant.borough}} - {{restaurant.address.street}}, {{restaurant.address.zipcode}} - bât.{{restaurant.address.building}}</p>
+      </v-layout>
+    </v-parallax>
     <l-map  :zoom="13" :center="[48.866667, 2.333333]">
       <l-tile-layer :url="url"></l-tile-layer>
       <l-marker :lat-lng="[48.866667, 2.333333]"></l-marker>
@@ -13,6 +18,8 @@
 <script>
 export default {
   mounted() {
+    console.log(localStorage["image"]);
+    this.image = localStorage["image"];
     this.API.getRestaurantById(this.$route.params.id)
       .then(result => {
         this.restaurant = result.restaurant;
@@ -25,14 +32,12 @@ export default {
       });
   },
   data() {
+      image: ""
     return {
       restaurant : {},
       url : "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       
     };
-  },
-  displayGeocoderMap(){
-    
   },
 };
 </script>
@@ -42,10 +47,11 @@ scoped = ne se s'applique pas aux composants inclus
  */
 <style scoped>
 p {
-  font-style: italic;
-  color: red;
+  font-style: bold;
+  color: white;
 }
-#map{
-  height: 100%;
+
+h1 {
+  color: white;
 }
 </style>

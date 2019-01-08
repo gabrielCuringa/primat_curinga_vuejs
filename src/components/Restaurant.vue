@@ -59,11 +59,11 @@ export default {
     },
     goToDetail() {
       console.log(this.image);
+      localStorage["image"] = this.image;
       this.$router.push({
         name: "detail",
         params: {
-          id: this.id,
-          image: this.image
+          id: this.id
         }
       });
     },
