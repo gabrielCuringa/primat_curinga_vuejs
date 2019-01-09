@@ -9,7 +9,6 @@
               <v-flex
                 v-for="restaurant, index of datasRestaurants.restaurants"
                 xs4
-                md3
                 :key="restaurant._id"
               >
                 <app-restaurant
@@ -35,7 +34,8 @@ export default {
   props: ["datasRestaurants"],
   data() {
     return {
-      userName: "toto"
+      userName: "toto",
+      page: 1
     };
   },
   components: {

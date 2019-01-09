@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="detail">
     <v-parallax dark :src="image">
       <v-layout align-center column justify-center>
         <h1 class="display-2 font-weight-thin mb-3">{{restaurant.name}}</h1>
         <h1 class="subheading">{{restaurant.cuisine}}</h1>
-        <p>{{restaurant.borough}} - {{restaurant.address.street}}, {{restaurant.address.zipcode}} - bât.{{restaurant.address.building}}</p>
+        <p id="address">{{addressGeocoder}}</p>
       </v-layout>
     </v-parallax>
     <v-layout align-center column justify-center>
@@ -49,28 +49,50 @@ export default {
     this.API.getRestaurantById(this.$route.params.id)
       .then(result => {
         this.restaurant = result.restaurant;
-        console.log(this.restaurant);
-        console.log("toto");
-        console.log(this.restaurant.address.coord[0]);
+        this.API.getAddressFromLatLng(
+          this.restaurant.address.building +
+            " " +
+            this.restaurant.address.street
+        ).then(result => {
+          console.log(result);
+          if (result.length > 0) {
+            this.addressGeocoder = result[0].display_name;
+            this.coordinatesGeocoder = [result[0].lat, result[0].lon];
+          } else {
+            this.addressGeocoder =
+              this.restaurant.address.building +
+              " " +
+              this.restaurant.address.street +
+              ", " +
+              this.restaurant.address.zipcode +
+              " (" +
+              this.restaurant.borough +
+              ")";
+            this.coordinatesGeocoder = this.restaurant.address.coord;
+          }
+        });
       })
       .catch(err => {
         console.log(err);
       });
   },
   data() {
-      image: ""
+    image: "";
     return {
-      restaurant : {},
-      url : "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      restaurant: {},
+      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      addressGeocoder: "",
+      coordinatesGeocoder: []
     };
-  },
+  }
 };
 </script>
 
 <style scoped>
-p {
+#address {
   font-style: bold;
   color: white;
+  background-color: black;
 }
 h1 {
   color: white;

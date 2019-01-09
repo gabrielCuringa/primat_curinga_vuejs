@@ -1,6 +1,28 @@
 <template>
   <div id="app">
     <v-app>
+      <!--<v-dialog v-model="loading" hide-overlay persistent width="300">
+        <v-card color="primary" dark>
+          <v-card-text>Please stand by
+            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>-->
+      <div class="text-xs-center">
+        <v-pagination v-model="page" circle :length="numberOfPages" @input="reloadRestaurants()"></v-pagination>
+        <p>{{numberOfPages}}</p>
+        <v-slider
+          v-model="pageSize"
+          color="orange"
+          label="Nombre"
+          hint="Nombre de restaurants à afficher"
+          min="1"
+          max="100"
+          :step="5"
+          thumb-label
+          @change="reloadRestaurants()"
+        ></v-slider>
+      </div>
       <!-- point d'entré -->
       <router-view
         v-on:reload-restaurants="reloadRestaurants()"
@@ -32,7 +54,12 @@ export default {
     return {
       restaurants: [],
       nbRestaurants: 0,
-      randomImages: []
+      randomImages: [],
+      randomImagesObject: [],
+      pageSize: 10,
+      numberOfPages: 1,
+      page: 1,
+      loading: true
     };
   },
   mounted() {
@@ -41,10 +68,14 @@ export default {
   methods: {
     reloadRestaurants() {
       console.log("i'm reloading - App");
-      this.API.getRestaurants(0, 10)
+      console.log("page: " + this.page);
+      this.API.getRestaurants(this.page - 1, this.pageSize)
         .then(result => {
           this.restaurants = result.data;
           this.nbRestaurants = result.count;
+          this.numberOfPages = Math.round(
+            (this.nbRestaurants - 1) / this.pageSize
+          );
         })
         .catch(err => {
           console.log(err);
@@ -58,11 +89,31 @@ export default {
           imageResult.data.result.items.forEach(item => {
             this.randomImages.push(item.media);
           });
+          this.loadImages();
           //console.log(this.randomImages);
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    loadImages() {
+      var randomImagesCount = 0;
+      var randomImagesCountError = 0;
+
+      this.randomImages.forEach(item => {
+        var img = new Image();
+        img.onload = () => {
+          //randomImagesCount++;
+          //console.log(randomImagesCount);
+          this.randomImagesObject.push(img);
+        };
+        /*img.onerror = () => {
+          randomImagesCountError++;
+          console.log("Error:" + randomImagesCountError);
+        };*/
+        img.src = item;
+        //this.randomImagesObject.push(img);
+      });
     }
   }
 };

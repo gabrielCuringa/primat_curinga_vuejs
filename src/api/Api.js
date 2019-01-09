@@ -78,4 +78,27 @@ export default class {
         });
     });
   }
+
+  getAddressFromLatLng(address) {
+    console.log("dans get address from lat lng");
+    address = address.split(" ").join("+");
+    return new Promise((resolve, reject) => {
+      let url =
+        "http://nominatim.openstreetmap.org/search?q=" +
+        address +
+        "&format=json";
+      fetch(url, {
+        method: "get"
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          resolve(json);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }

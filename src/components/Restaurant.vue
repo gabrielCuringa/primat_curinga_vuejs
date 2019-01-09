@@ -1,37 +1,42 @@
 <template>
   <div>
     <v-hover>
-      <v-card
-        slot-scope="{ hover }"
-        :class="`elevation-${hover ? 12 : 2}`"
-        class="mx-auto"
-        @click="goToDetail()"
-      >
-        <v-img :src="image" aspect-ratio="2.75"></v-img>
+      <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`" class="mx-auto">
+        <v-btn color="blue" dark small absolute right top fab v-show="hover" @click="goToDetail()">
+          <v-icon>add</v-icon>
+        </v-btn>
+        <v-img :src="image" aspect-ratio="2.75">
+          <v-container fill-height fluid>
+            <v-layout fill-height>
+              <v-flex xs12 align-end flexbox>
+                <span class="headline">{{name}}</span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-img>
         <v-card-title primary-title>
           <div>
-            <h3 class="headline mb-0">{{name}}</h3>
             <div>{{cuisine}}</div>
           </div>
-          <div class="d-flex">
-            <v-rating
-              :value="parseFloat(gradeAverage())"
-              color="amber"
-              dense
-              half-increments
-              readonly
-              size="14"
-            ></v-rating>
-            <div class="ml-2 grey--text text--darken-2">
-              <span>{{gradeAverage()}}</span>
-              <span>({{ grades.length }})</span>
-            </div>
-          </div>
         </v-card-title>
+        <div class="d-flex">
+          <v-rating
+            :value="parseFloat(gradeAverage())"
+            color="amber"
+            dense
+            half-increments
+            readonly
+            size="20"
+          ></v-rating>
+          <div class="ml-2 grey--text text--darken-2">
+            <span>{{gradeAverage()}}</span>
+            <span>({{ grades.length }})</span>
+          </div>
+        </div>
 
         <v-card-actions>
-          <v-btn color="info" @click="updateRestaurant()">Modifier</v-btn>
-          <v-btn color="error" @click="deleteRestaurant()">Supprimer</v-btn>
+          <v-btn flat color="info" @click="updateRestaurant()">Modifier</v-btn>
+          <v-btn flat color="error" @click="deleteRestaurant()">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>
@@ -82,8 +87,7 @@ export default {
 scoped = ne se s'applique pas aux composants inclus
  */
 <style scoped>
-p {
-  font-style: italic;
-  color: red;
+.headline {
+  background-color: white;
 }
 </style>
