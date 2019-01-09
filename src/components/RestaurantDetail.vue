@@ -47,7 +47,7 @@ export default {
       restaurant: {},
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       addressGeocoder: "",
-      coordinatesGeocoder: [],
+      coordinatesGeocoder: [48.866667, 2.333333],
       bounds: []
     };
   },
