@@ -7,10 +7,37 @@
         <p>{{restaurant.borough}} - {{restaurant.address.street}}, {{restaurant.address.zipcode}} - bât.{{restaurant.address.building}}</p>
       </v-layout>
     </v-parallax>
-    <l-map  :zoom="13" :center="[48.866667, 2.333333]">
-      <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker :lat-lng="[48.866667, 2.333333]"></l-marker>
-    </l-map>
+    <v-layout align-center column justify-center>
+      <h2>Vous pouvez nous trouver ici !</h2>
+        <div id="mapContainer">
+          <l-map id="map" :zoom="13" :center="[48.866667, 2.333333]">
+            <l-tile-layer :url="url"></l-tile-layer>
+            <l-marker :lat-lng="[48.866667, 2.333333]"></l-marker>
+          </l-map>
+        </div>
+    </v-layout>
+    <v-layout align-center column justify-center>
+      <h2> Nos notes !</h2>
+
+      <v-list two-line>
+          <template v-for="grade in restaurant.grades">
+            <div class="d-flex">
+              <v-rating
+              :value="(grade.score) / 4"
+              color="amber"
+              dense
+              half-increments
+              readonly
+              size="14"
+              ></v-rating>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="grade.score"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="grade.grade"></v-list-tile-sub-title>
+              </v-list-tile-content>
+            </div>
+          </template>
+        </v-list>
+    </v-layout>
   </div>
 </template>
 
@@ -45,8 +72,23 @@ p {
   font-style: bold;
   color: white;
 }
-
 h1 {
   color: white;
+}
+
+#mapContainer{
+  width: 80%;
+  height: 300px;
+  border: 1px solid #009688;
+  }
+#gradesContainer{
+  width: 100%;
+  background-color: #ffffff;
+}
+h2 {
+  background-color: #ffffff;
+  color: #009688;
+  font-style: italic;
+  width: 100%;
 }
 </style>
