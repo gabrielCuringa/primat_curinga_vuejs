@@ -114,12 +114,9 @@ export default class {
         })
         .then(json => {
           var meals = json.meals;
-          meals.indexOf("Starter") > -1
-            ? meals.splice(meals.indexOf("Starter"), 1)
-            : null;
-          meals.indexOf("Desert") > -1
-            ? meals.splice(meals.indexOf("Desert"), 1)
-            : null;
+          //on retire les entrées et desserts
+          meals.length > -1 ? meals.splice(3, 1) : null;
+          meals.length > -1 ? meals.splice(9, 1) : null;
           resolve(meals);
         })
         .catch(error => {
@@ -128,24 +125,24 @@ export default class {
     });
   }
 
-  getRandomMenus() {
+  getMenuFromCategory(category) {
     return new Promise((resolve, reject) => {
-      this.getCategories().then(meals => {
-        console.log(meals);
-        /*let url = "https://www.themealdb.com/api/json/v1/1/list.php?c=";
-        fetch(url, {
-          method: "get"
+      console.log("go " + category);
+      //get entrees
+      let url =
+        "https://www.themealdb.com/api/json/v1/1/filter.php?c=" + category;
+      fetch(url, {
+        method: "get"
+      })
+        .then(response => {
+          return response.json();
         })
-          .then(response => {
-            return response.json();
-          })
-          .then(json => {
-            resolve(json);
-          })
-          .catch(error => {
-            reject(error);
-          });*/
-      });
+        .then(json => {
+          resolve(json);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   }
 

@@ -62,7 +62,7 @@ export default {
         });
 
       randomImagesApi
-        .images("restaurant", 20)
+        .images("food", 20)
         .then(imageResult => {
           console.log(imageResult);
 
