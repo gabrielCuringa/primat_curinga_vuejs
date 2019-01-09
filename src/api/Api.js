@@ -1,3 +1,4 @@
+var Utils = require("../Utils.js");
 export default class {
   constructor() {}
 
@@ -100,5 +101,55 @@ export default class {
           reject(error);
         });
     });
+  }
+
+  getCategories() {
+    return new Promise((resolve, reject) => {
+      let url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
+      fetch(url, {
+        method: "get"
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          var meals = json.meals;
+          meals.indexOf("Starter") > -1
+            ? meals.splice(meals.indexOf("Starter"), 1)
+            : null;
+          meals.indexOf("Desert") > -1
+            ? meals.splice(meals.indexOf("Desert"), 1)
+            : null;
+          resolve(meals);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  getRandomMenus() {
+    return new Promise((resolve, reject) => {
+      this.getCategories().then(meals => {
+        console.log(meals);
+        /*let url = "https://www.themealdb.com/api/json/v1/1/list.php?c=";
+        fetch(url, {
+          method: "get"
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(json => {
+            resolve(json);
+          })
+          .catch(error => {
+            reject(error);
+          });*/
+      });
+    });
+  }
+
+  getRandomImages() {
+    return new Promise((resolve, reject) => {});
   }
 }

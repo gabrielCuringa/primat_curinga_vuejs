@@ -5,44 +5,52 @@
         <h1 class="display-2 font-weight-thin mb-3">{{restaurant.name}}</h1>
         <h1 class="subheading">{{restaurant.cuisine}}</h1>
         <p id="address">{{addressGeocoder}}</p>
+        <v-btn @click="goToMenu">Passer une commande</v-btn>
       </v-layout>
     </v-parallax>
     <v-layout align-center column justify-center>
       <h2>Vous pouvez nous trouver ici !</h2>
-        <div id="mapContainer">
-          <l-map id="map" :zoom="13" :center="[48.866667, 2.333333]">
-            <l-tile-layer :url="url"></l-tile-layer>
-            <l-marker :lat-lng="[48.866667, 2.333333]"></l-marker>
-          </l-map>
-        </div>
-    </v-layout>
-    <v-layout align-center column justify-center>
-      <h2> Nos notes !</h2>
+      <div id="mapContainer">
+        <l-map id="map" :zoom="13" :center="coordinatesGeocoder">
+          <l-tile-layer :url="url"></l-tile-layer>
+          <l-marker :lat-lng="coordinatesGeocoder"></l-marker>
+        </l-map>
+      </div>
+      <h2>Nos notes !</h2>
 
       <v-list two-line>
-          <template v-for="grade in restaurant.grades">
-            <div class="d-flex">
-              <v-rating
+        <v-flex v-for="grade in restaurant.grades">
+          <div class="d-flex">
+            <v-rating
               :value="(grade.score) / 4"
               color="amber"
               dense
               half-increments
               readonly
               size="14"
-              ></v-rating>
-              <v-list-tile-content>
-                <v-list-tile-title v-html="grade.score"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="grade.grade"></v-list-tile-sub-title>
-              </v-list-tile-content>
-            </div>
-          </template>
-        </v-list>
+            ></v-rating>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="grade.score"></v-list-tile-title>
+              <v-list-tile-sub-title v-html="grade.grade"></v-list-tile-sub-title>
+            </v-list-tile-content>
+          </div>
+        </v-flex>
+      </v-list>
     </v-layout>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      restaurant: {},
+      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      addressGeocoder: "",
+      coordinatesGeocoder: [],
+      bounds: []
+    };
+  },
   mounted() {
     console.log(localStorage["image"]);
     this.image = localStorage["image"];
@@ -56,8 +64,13 @@ export default {
         ).then(result => {
           console.log(result);
           if (result.length > 0) {
+            console.log("ici");
             this.addressGeocoder = result[0].display_name;
-            this.coordinatesGeocoder = [result[0].lat, result[0].lon];
+            this.coordinatesGeocoder = [
+              parseInt(result[0].lat),
+              parseInt(result[0].lon)
+            ];
+            //console.log(this.coordinatesGeocoder);
           } else {
             this.addressGeocoder =
               this.restaurant.address.building +
@@ -76,14 +89,15 @@ export default {
         console.log(err);
       });
   },
-  data() {
-    image: "";
-    return {
-      restaurant: {},
-      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-      addressGeocoder: "",
-      coordinatesGeocoder: []
-    };
+  methods: {
+    goToMenu() {
+      this.$router.push({
+        name: "menu",
+        params: {
+          id: this.$route.params.id
+        }
+      });
+    }
   }
 };
 </script>
@@ -98,12 +112,12 @@ h1 {
   color: white;
 }
 
-#mapContainer{
+#mapContainer {
   width: 80%;
   height: 300px;
   border: 1px solid #009688;
-  }
-#gradesContainer{
+}
+#gradesContainer {
   width: 100%;
   background-color: #ffffff;
 }
@@ -111,6 +125,5 @@ h2 {
   background-color: #ffffff;
   color: #009688;
   font-style: italic;
-  width: 100%;
 }
 </style>

@@ -1,7 +1,27 @@
 <template>
   <div>
-    <p>Nombre de restaurants : {{datasRestaurants.nbRestaurants}}</p>
-    <v-layout>
+    <v-container>
+      <div class="text-xs-center">
+        <v-pagination
+          v-model="page"
+          circle
+          :length="numberOfPages"
+          @input="reload()"
+          :total-visible="7"
+        ></v-pagination>
+        <p>{{numberOfPages}}</p>
+        <v-slider
+          v-model="pageSize"
+          color="orange"
+          label="Nombre"
+          hint="Nombre de restaurants à afficher"
+          min="1"
+          max="100"
+          :step="5"
+          thumb-label
+          @change="reload()"
+        ></v-slider>
+      </div>
       <v-flex>
         <v-card>
           <v-container v-bind="{ [`grid-list-xl`]: true }" fluid>
@@ -24,18 +44,21 @@
           </v-container>
         </v-card>
       </v-flex>
-    </v-layout>
+    </v-container>
   </div>
 </template>
 
 <script>
 import Restaurant from "./Restaurant.vue";
+import Utils from "../Utils.js";
+
 export default {
-  props: ["datasRestaurants"],
+  props: ["datasRestaurants", "numberOfPages"],
   data() {
     return {
       userName: "toto",
-      page: 1
+      page: 1,
+      pageSize: 10
     };
   },
   components: {
@@ -44,14 +67,15 @@ export default {
   methods: {
     reload() {
       console.log("i'm reloading");
-      this.$emit("reload-restaurants");
+      this.$emit("reload-restaurants", this.page, this.pageSize);
     },
     getRandomImage() {
-      var random = Math.round(
-        Math.random() * this.datasRestaurants.randomImages.length
-      );
+      let random = Utils.random(0, this.datasRestaurants.randomImages.length);
 
       return this.datasRestaurants.randomImages[random];
+    },
+    inputPagination() {
+      console.log("pagination: " + this.page);
     }
   }
 };

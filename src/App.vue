@@ -1,33 +1,15 @@
 <template>
   <div id="app">
     <v-app>
-      <!--<v-dialog v-model="loading" hide-overlay persistent width="300">
-        <v-card color="primary" dark>
-          <v-card-text>Please stand by
-            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-          </v-card-text>
-        </v-card>
-      </v-dialog>-->
-      <div class="text-xs-center">
-        <v-pagination v-model="page" circle :length="numberOfPages" @input="reloadRestaurants()"></v-pagination>
-        <p>{{numberOfPages}}</p>
-        <v-slider
-          v-model="pageSize"
-          color="orange"
-          label="Nombre"
-          hint="Nombre de restaurants à afficher"
-          min="1"
-          max="100"
-          :step="5"
-          thumb-label
-          @change="reloadRestaurants()"
-        ></v-slider>
-      </div>
       <!-- point d'entré -->
       <router-view
-        v-on:reload-restaurants="reloadRestaurants()"
+        v-on:reload-restaurants="reloadRestaurants"
         :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants, randomImages: randomImages}"
+        :numberOfPages="numberOfPages"
       ></router-view>
+
+      <!--Cart-->
+      <app-cart></app-cart>
 
       <!--Footer-->
       <v-footer dark height="auto">
@@ -56,33 +38,31 @@ export default {
       nbRestaurants: 0,
       randomImages: [],
       randomImagesObject: [],
-      pageSize: 10,
       numberOfPages: 1,
-      page: 1,
-      loading: true
+      loading: true,
+      cartActivated: false
     };
   },
   mounted() {
     this.reloadRestaurants();
   },
   methods: {
-    reloadRestaurants() {
+    reloadRestaurants(page = 1, pageSize = 10) {
       console.log("i'm reloading - App");
-      console.log("page: " + this.page);
-      this.API.getRestaurants(this.page - 1, this.pageSize)
+      console.log("page: " + page);
+
+      this.API.getRestaurants(page - 1, pageSize)
         .then(result => {
           this.restaurants = result.data;
           this.nbRestaurants = result.count;
-          this.numberOfPages = Math.round(
-            (this.nbRestaurants - 1) / this.pageSize
-          );
+          this.numberOfPages = Math.round((this.nbRestaurants - 1) / pageSize);
         })
         .catch(err => {
           console.log(err);
         });
 
       randomImagesApi
-        .images("restaurant", 50)
+        .images("restaurant", 20)
         .then(imageResult => {
           console.log(imageResult);
 
