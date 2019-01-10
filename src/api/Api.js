@@ -2,14 +2,16 @@ var Utils = require("../Utils.js");
 export default class {
   constructor() {}
 
-  getRestaurants(page, pagesize) {
+  getRestaurants(page, pagesize, name = "") {
     console.log("dans get restaurants");
     return new Promise((resolve, reject) => {
       let urlRestaurants =
         "http://localhost:8080/api/restaurants?page=" +
         page +
         "&pagesize=" +
-        pagesize;
+        pagesize +
+        "&name=" +
+        name;
 
       fetch(urlRestaurants, {
         method: "get"
@@ -28,6 +30,53 @@ export default class {
         .catch(error => {
           reject(error);
         });
+    });
+  }
+
+  addRestaurant(formData) {
+    return new Promise((resolve, reject) => {
+      let urlRestaurants = "http://localhost:8080/api/restaurants/";
+      fetch(urlRestaurants, {
+        method: "post",
+        body: formData
+      }).then(response => {
+        response
+          .json()
+          .then(res => {
+            //arrow function preserve le THIS
+            console.log("Resto inséré");
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    });
+
+    // on remet à zéro les champs
+    this.nom = "";
+    this.cuisine = "";
+  }
+
+  updateRestaurant(id, formData) {
+    let url = "http://localhost:8080/api/restaurants/" + id;
+
+    return new Promise((resolve, reject) => {
+      fetch(url, {
+        method: "put",
+        body: formData
+      }).then(response => {
+        response
+          .json()
+          .then(res => {
+            //arrow function preserve le THIS
+            console.log("Resto modifié");
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
     });
   }
 

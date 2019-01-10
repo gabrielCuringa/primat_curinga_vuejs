@@ -48,6 +48,7 @@
 <script>
 import Utils from "../Utils.js";
 export default {
+  name: "app-restaurant-menu",
   data() {
     return {
       promises : [],

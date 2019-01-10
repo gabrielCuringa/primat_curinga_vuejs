@@ -5,7 +5,7 @@
         <v-btn color="blue" dark small absolute right top fab v-show="hover" @click="goToDetail()">
           <v-icon>add</v-icon>
         </v-btn>
-        <v-img :src="image" aspect-ratio="2.75" @load="onLoadImage" @error="onLoadImageError">
+        <v-img :src="image" aspect-ratio="2.75">
           <v-container fill-height fluid>
             <v-layout fill-height>
               <v-flex xs12 align-end flexbox>
@@ -19,7 +19,7 @@
             <div>{{cuisine}}</div>
           </div>
         </v-card-title>
-        <div class="d-flex">
+        <div class="d-flex" v-if="grades != null">
           <v-rating
             :value="parseFloat(gradeAverage())"
             color="amber"
@@ -33,24 +33,29 @@
             <span>({{ grades.length }})</span>
           </div>
         </div>
-
         <v-card-actions>
-          <v-btn flat color="info" @click="updateRestaurant()">Modifier</v-btn>
+          <v-btn flat color="info" @click="edit">Modifier</v-btn>
           <v-btn flat color="error" @click="deleteRestaurant()">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>
+    <app-edit-restaurant
+      v-on:reload-restaurants="reload"
+      :restaurant="{id: id, name: name, cuisine: cuisine}"
+      ref="editRestaurantModal"
+    ></app-edit-restaurant>
   </div>
 </template>
 
 <script>
+import editRestaurantModal from "./EditRestaurant.vue";
 export default {
+  name: "app-restaurant",
   props: ["id", "name", "cuisine", "grades", "image"],
   data() {
     return {};
   },
   methods: {
-    updateRestaurant() {},
     deleteRestaurant() {
       this.API.deleteRestaurant(this.id)
         .then(result => {
@@ -68,24 +73,31 @@ export default {
       this.$router.push({
         name: "detail",
         params: {
-          id: this.id
+          id: this.id,
+          image: this.image
         }
       });
     },
+    editDialog(event) {
+      console.log("edit dialog");
+      this.showEditDialog = $event.show;
+    },
     gradeAverage() {
       var total = 0;
-      this.grades.forEach(element => {
-        total = total + parseInt(element.score);
-      });
-      return (total / this.grades.length / 4).toFixed(2);
+      if (this.grades != null) {
+        this.grades.forEach(element => {
+          total = total + parseInt(element.score);
+        });
+        return (total / this.grades.length / 4).toFixed(2);
+      } else {
+        return 0;
+      }
     },
-    onLoadImage() {
-      console.log("loading image...");
+    edit() {
+      this.$refs.editRestaurantModal.showModal();
     },
-    onLoadImageError() {
-      console.log("failed loading image...");
-      this.image =
-        "https://file.videopolis.com/D/9dc9f4ba-0b2d-4cbb-979f-fee7be8a4198/8485.11521.brussels.the-hotel-brussels.amenity.restaurant-AD3WAP2L-13000-853x480.jpeg";
+    reload() {
+      this.$emit("reload-restaurants");
     }
   }
 };

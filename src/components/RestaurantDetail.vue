@@ -1,6 +1,6 @@
 <template>
   <div id="detail">
-    <v-parallax dark :src="image">
+    <v-parallax dark :src="$route.params.image">
       <v-layout align-center column justify-center>
         <h1 class="display-2 font-weight-thin mb-3">{{restaurant.name}}</h1>
         <h1 class="subheading">{{restaurant.cuisine}}</h1>
@@ -42,6 +42,8 @@
 
 <script>
 export default {
+  name: "app-restaurant-detail",
+  props: ["image"],
   data() {
     return {
       restaurant: {},
@@ -52,8 +54,6 @@ export default {
     };
   },
   mounted() {
-    console.log(localStorage["image"]);
-    this.image = localStorage["image"];
     this.API.getRestaurantById(this.$route.params.id)
       .then(result => {
         this.restaurant = result.restaurant;

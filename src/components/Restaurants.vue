@@ -2,14 +2,14 @@
   <div>
     <v-container>
       <div class="text-xs-center">
+        <app-find-restaurant v-on:find-restaurants="find($event)"></app-find-restaurant>
         <v-pagination
           v-model="page"
           circle
-          :length="numberOfPages"
-          @input="reload()"
+          :length="numberOfPages-1"
+          @input="reload"
           :total-visible="7"
         ></v-pagination>
-        <p>{{numberOfPages}}</p>
         <v-slider
           v-model="pageSize"
           color="orange"
@@ -53,12 +53,14 @@ import Restaurant from "./Restaurant.vue";
 import Utils from "../Utils.js";
 
 export default {
+  name: "app-restaurants",
   props: ["datasRestaurants", "numberOfPages"],
   data() {
     return {
       userName: "toto",
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      search: ""
     };
   },
   components: {
@@ -69,13 +71,13 @@ export default {
       console.log("i'm reloading");
       this.$emit("reload-restaurants", this.page, this.pageSize);
     },
+    find(event) {
+      this.$emit("find-restaurant", { search: event.search });
+    },
     getRandomImage() {
       let random = Utils.random(0, this.datasRestaurants.randomImages.length);
 
       return this.datasRestaurants.randomImages[random];
-    },
-    inputPagination() {
-      console.log("pagination: " + this.page);
     }
   }
 };
