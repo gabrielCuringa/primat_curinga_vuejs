@@ -1,12 +1,17 @@
 <template>
   <div id="app">
     <v-app>
-      <!-- point d'entré -->
-      <router-view
-        v-on:reload-restaurants="reloadRestaurants"
-        :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants, randomImages: randomImages}"
-        :numberOfPages="numberOfPages"
-      ></router-view>
+      <v-content>
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Mini projet - M1 MIAGE</v-toolbar-title>
+        </v-toolbar>
+        <!-- point d'entré -->
+        <router-view
+          v-on:reload-restaurants="reloadRestaurants"
+          :datasRestaurants="{restaurants: restaurants, nbRestaurants: nbRestaurants, randomImages: randomImages}"
+          :numberOfPages="numberOfPages"
+        ></router-view>
+      </v-content>
 
       <!--Cart-->
       <app-cart></app-cart>
@@ -36,15 +41,33 @@ export default {
     return {
       restaurants: [],
       nbRestaurants: 0,
-      randomImages: [],
       randomImagesObject: [],
       numberOfPages: 1,
       loading: true,
-      cartActivated: false
+      cartActivated: false,
+      randomImages: []
     };
   },
   mounted() {
     this.reloadRestaurants();
+
+    console.log("loading image");
+    randomImagesApi
+      .images("food", 20)
+      .then(imageResult => {
+        console.log(imageResult);
+
+        imageResult.data.result.items.forEach(item => {
+          this.randomImages.push(item.media);
+        });
+
+        this.imagesLoaded = true;
+        //this.loadImages();
+        //console.log(this.randomImages);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     reloadRestaurants(page = 1, pageSize = 10) {
@@ -56,21 +79,6 @@ export default {
           this.restaurants = result.data;
           this.nbRestaurants = result.count;
           this.numberOfPages = Math.round((this.nbRestaurants - 1) / pageSize);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
-      randomImagesApi
-        .images("food", 20)
-        .then(imageResult => {
-          console.log(imageResult);
-
-          imageResult.data.result.items.forEach(item => {
-            this.randomImages.push(item.media);
-          });
-          this.loadImages();
-          //console.log(this.randomImages);
         })
         .catch(err => {
           console.log(err);
@@ -106,7 +114,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 h1,

@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-container>
+      <v-text-field type="text" v-model="search" placeholder="Rechercher..."></v-text-field>
       <div class="text-xs-center">
         <v-pagination
           v-model="page"
@@ -26,11 +27,7 @@
         <v-card>
           <v-container v-bind="{ [`grid-list-xl`]: true }" fluid>
             <v-layout row wrap>
-              <v-flex
-                v-for="restaurant, index of datasRestaurants.restaurants"
-                xs4
-                :key="restaurant._id"
-              >
+              <v-flex v-for="restaurant, index of filteredRestaurants" xs4 :key="restaurant._id">
                 <app-restaurant
                   :id="restaurant._id"
                   :name="restaurant.name"
@@ -58,7 +55,8 @@ export default {
     return {
       userName: "toto",
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      search: ""
     };
   },
   components: {
@@ -76,6 +74,15 @@ export default {
     },
     inputPagination() {
       console.log("pagination: " + this.page);
+    }
+  },
+  computed: {
+    filteredRestaurants() {
+      return this.datasRestaurants.restaurants.filter(restaurant => {
+        return restaurant.name
+          .toLowerCase()
+          .includes(this.search.toLowerCase());
+      });
     }
   }
 };
