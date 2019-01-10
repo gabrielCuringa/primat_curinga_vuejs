@@ -19,7 +19,7 @@
             <div>{{cuisine}}</div>
           </div>
         </v-card-title>
-        <div class="d-flex">
+        <div class="d-flex" v-if="grades != null">
           <v-rating
             :value="parseFloat(gradeAverage())"
             color="amber"
@@ -45,6 +45,7 @@
 
 <script>
 export default {
+  name: "app-restaurant",
   props: ["id", "name", "cuisine", "grades", "image"],
   data() {
     return {};
@@ -68,16 +69,21 @@ export default {
       this.$router.push({
         name: "detail",
         params: {
-          id: this.id
+          id: this.id,
+          image: this.image
         }
       });
     },
     gradeAverage() {
       var total = 0;
-      this.grades.forEach(element => {
-        total = total + parseInt(element.score);
-      });
-      return (total / this.grades.length / 4).toFixed(2);
+      if (this.grades != null) {
+        this.grades.forEach(element => {
+          total = total + parseInt(element.score);
+        });
+        return (total / this.grades.length / 4).toFixed(2);
+      } else {
+        return 0;
+      }
     }
   }
 };
