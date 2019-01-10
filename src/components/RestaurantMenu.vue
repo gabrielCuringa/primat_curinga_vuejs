@@ -15,11 +15,7 @@
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile v-for="meal in item.meals" :key="meal.idMeal">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ meal.strMeal }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <app-restaurant-menu-item :item="item"></app-restaurant-menu-item>
           </v-list-group>
         </v-list>
       </v-flex>
@@ -29,8 +25,13 @@
 
 <script>
 import Utils from "../Utils.js";
+import RestaurantMenuItem from "./RestaurantMenuItem.vue";
+
 export default {
   name: "app-restaurant-menu",
+  components: {
+    "app-restaurant-menu-item": RestaurantMenuItem
+  },
   data() {
     return {
       menu: []
