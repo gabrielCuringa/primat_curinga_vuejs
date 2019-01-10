@@ -33,17 +33,22 @@
             <span>({{ grades.length }})</span>
           </div>
         </div>
-
         <v-card-actions>
-          <v-btn flat color="info" @click="updateRestaurant()">Modifier</v-btn>
+          <v-btn flat color="info" @click="edit">Modifier</v-btn>
           <v-btn flat color="error" @click="deleteRestaurant()">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>
+    <app-edit-restaurant
+      v-on:reload-restaurants="reload"
+      :restaurant="{id: id, name: name, cuisine: cuisine}"
+      ref="editRestaurantModal"
+    ></app-edit-restaurant>
   </div>
 </template>
 
 <script>
+import editRestaurantModal from "./EditRestaurant.vue";
 export default {
   name: "app-restaurant",
   props: ["id", "name", "cuisine", "grades", "image"],
@@ -51,7 +56,6 @@ export default {
     return {};
   },
   methods: {
-    updateRestaurant() {},
     deleteRestaurant() {
       this.API.deleteRestaurant(this.id)
         .then(result => {
@@ -74,6 +78,10 @@ export default {
         }
       });
     },
+    editDialog(event) {
+      console.log("edit dialog");
+      this.showEditDialog = $event.show;
+    },
     gradeAverage() {
       var total = 0;
       if (this.grades != null) {
@@ -84,6 +92,12 @@ export default {
       } else {
         return 0;
       }
+    },
+    edit() {
+      this.$refs.editRestaurantModal.showModal();
+    },
+    reload() {
+      this.$emit("reload-restaurants");
     }
   }
 };

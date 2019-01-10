@@ -40,16 +40,44 @@ export default class {
         method: "post",
         body: formData
       }).then(response => {
-        response.json().then(res => {
-          //arrow function preserve le THIS
-          console.log("Resto inséré");
-        });
+        response
+          .json()
+          .then(res => {
+            //arrow function preserve le THIS
+            console.log("Resto inséré");
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
       });
     });
 
     // on remet à zéro les champs
     this.nom = "";
     this.cuisine = "";
+  }
+
+  updateRestaurant(id, formData) {
+    let url = "http://localhost:8080/api/restaurants/" + id;
+
+    return new Promise((resolve, reject) => {
+      fetch(url, {
+        method: "put",
+        body: formData
+      }).then(response => {
+        response
+          .json()
+          .then(res => {
+            //arrow function preserve le THIS
+            console.log("Resto modifié");
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    });
   }
 
   getRestaurantById(id) {

@@ -7,6 +7,7 @@ import Api from "./api/Api";
 import Router from "./router/index.js";
 import Cart from "./components/Cart.vue";
 import FindRestaurant from "./components/FindRestaurant.vue";
+import EditRestaurant from "./components/EditRestaurant.vue";
 
 //Map import
 import { L, LMap, LTileLayer, LMarker } from "vue2-leaflet";
@@ -18,6 +19,7 @@ Vue.component("l-marker", LMarker);
 
 Vue.component("app-cart", Cart);
 Vue.component("app-find-restaurant", FindRestaurant);
+Vue.component("app-edit-restaurant", EditRestaurant);
 
 delete L.Icon.Default.prototype._getIconUrl;
 

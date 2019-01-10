@@ -10,7 +10,6 @@
           @input="reload"
           :total-visible="7"
         ></v-pagination>
-        <p>{{numberOfPages}}</p>
         <v-slider
           v-model="pageSize"
           color="orange"
