@@ -187,9 +187,18 @@ export default class {
           return response.json();
         })
         .then(json => {
+          var meals = [];
+
+          //add random prices
+          meals = json.meals;
+
+          meals.forEach(meal => {
+            meal["price"] = Utils.random(7, 16);
+          });
+
           let mealsByCategory = {
             category: category,
-            meals: json.meals
+            meals: meals
           };
 
           resolve(mealsByCategory);
