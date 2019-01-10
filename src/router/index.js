@@ -4,7 +4,7 @@ import Restaurants from "../components/Restaurants.vue";
 import RestaurantDetail from "../components/RestaurantDetail.vue";
 import AddRestaurant from "../components/AddRestaurant.vue";
 import ErrorVue from "../components/Error.vue";
-import Menu from "../components/Menu.vue";
+import RestaurantMenu from "../components/RestaurantMenu.vue";
 
 Vue.use(Router);
 
@@ -22,7 +22,7 @@ const routes = [
   {
     path: "/:id/menu",
     name: "menu",
-    component: Menu
+    component: RestaurantMenu
   },
   {
     path: "*",

@@ -187,7 +187,12 @@ export default class {
           return response.json();
         })
         .then(json => {
-          resolve(json);
+          let mealsByCategory = {
+            category: category,
+            meals: json.meals
+          };
+
+          resolve(mealsByCategory);
         })
         .catch(error => {
           reject(error);
