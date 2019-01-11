@@ -2,54 +2,45 @@ import Vue from "vue";
 
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
-
-import VueRouter from "vue-router";
 import App from "./App.vue";
+import Api from "./api/Api";
+import Router from "./router/index.js";
+import Cart from "./components/Cart.vue";
+import FindRestaurant from "./components/FindRestaurant.vue";
+import EditRestaurant from "./components/EditRestaurant.vue";
+import Commande from "./components/Commande.vue";
 
-// Custom components
-import Restaurants from "./components/Restaurants.vue";
-import RestaurantDetail from "./components/RestaurantDetail.vue";
-import ErrorVue from "./components/Error.vue";
-import Api from "./Api";
+//Map import
+import { L, LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
+
+Vue.component("l-map", LMap);
+Vue.component("l-tile-layer", LTileLayer);
+Vue.component("l-marker", LMarker);
+
+Vue.component("app-cart", Cart);
+Vue.component("app-find-restaurant", FindRestaurant);
+Vue.component("app-edit-restaurant", EditRestaurant);
+Vue.component("app-commande", Commande);
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
+
 
 //Global variable
 Vue.API = Vue.prototype.API = new Api();
+Vue.prototype.$cart = [];
 
 // Librairies graphiques
 Vue.use(Vuetify);
 
-// COMPOSANT GLOBAL qui peut être utilisé n'importe où
-Vue.component("app-restaurants", Restaurants);
-Vue.component("app-restaurant-detail", RestaurantDetail);
-
-// Définition des routes
-Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: Restaurants
-  },
-  {
-    path: "/:id",
-    name: "detail",
-    component: RestaurantDetail
-  },
-  {
-    path: "*",
-    name: "error",
-    component: ErrorVue
-  }
-];
-
-const router = new VueRouter({
-  routes: routes,
-  mode: "history"
-});
-
-new Vue({
+var vm = new Vue({
   el: "#app",
-  router: router,
+  router: Router,
   render: h => h(App)
 });

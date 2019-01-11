@@ -1,7 +1,27 @@
 <template>
   <div>
-    <p>Nombre de restaurants : {{datasRestaurants.nbRestaurants}}</p>
-    <v-layout>
+    <v-container>
+      <div class="text-xs-center">
+        <app-find-restaurant v-on:find-restaurants="find($event)"></app-find-restaurant>
+        <v-pagination
+          v-model="page"
+          circle
+          :length="numberOfPages-1"
+          @input="reload"
+          :total-visible="7"
+        ></v-pagination>
+        <v-slider
+          v-model="pageSize"
+          color="orange"
+          label="Nombre"
+          hint="Nombre de restaurants à afficher"
+          min="1"
+          max="100"
+          :step="5"
+          thumb-label
+          @change="reload()"
+        ></v-slider>
+      </div>
       <v-flex>
         <v-card>
           <v-container v-bind="{ [`grid-list-xl`]: true }" fluid>
@@ -9,8 +29,7 @@
               <v-flex
                 v-for="restaurant, index of datasRestaurants.restaurants"
                 xs4
-                md3
-                v-bind:key="restaurant"
+                :key="restaurant._id"
               >
                 <app-restaurant
                   :id="restaurant._id"
@@ -18,23 +37,30 @@
                   :cuisine="restaurant.cuisine"
                   v-on:reload-restaurants="reload()"
                   :grades="restaurant.grades"
+                  :image="getRandomImage()"
                 ></app-restaurant>
               </v-flex>
             </v-layout>
           </v-container>
         </v-card>
       </v-flex>
-    </v-layout>
+    </v-container>
   </div>
 </template>
 
 <script>
 import Restaurant from "./Restaurant.vue";
+import Utils from "../Utils.js";
+
 export default {
-  props: ["datasRestaurants"],
+  name: "app-restaurants",
+  props: ["datasRestaurants", "numberOfPages"],
   data() {
     return {
-      userName: "toto"
+      userName: "toto",
+      page: 1,
+      pageSize: 10,
+      search: ""
     };
   },
   components: {
@@ -43,7 +69,15 @@ export default {
   methods: {
     reload() {
       console.log("i'm reloading");
-      this.$emit("reload-restaurants");
+      this.$emit("reload-restaurants", this.page, this.pageSize);
+    },
+    find(event) {
+      this.$emit("find-restaurant", { search: event.search });
+    },
+    getRandomImage() {
+      let random = Utils.random(0, this.datasRestaurants.randomImages.length);
+
+      return this.datasRestaurants.randomImages[random];
     }
   }
 };
