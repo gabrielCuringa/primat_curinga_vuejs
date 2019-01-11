@@ -1,9 +1,8 @@
 <template>
   <div>
     <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex md12>
         <v-list>
-
           <v-list-group
             v-for="item, index of menu"
             v-model="item.active"
@@ -12,12 +11,11 @@
           >
             <v-list-tile slot="activator">
               <v-list-tile-action v-for="item in items">
-                  <v-icon>{{ item.action }}</v-icon>
-                </v-list-tile-action>
+                <v-icon>{{ item.action }}</v-icon>
+              </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.category }}</v-list-tile-title>
               </v-list-tile-content>
-              
             </v-list-tile>
 
             <app-restaurant-menu-item :item="item"></app-restaurant-menu-item>
@@ -40,9 +38,7 @@ export default {
   data() {
     return {
       menu: [],
-      items :[
-        {action : 'restaurant_menu'}
-      ]
+      items: [{ action: "restaurant_menu" }]
     };
   },
   mounted() {
@@ -76,8 +72,7 @@ export default {
             });
         })
         .catch(err => {});
-    },
-    
+    }
   }
 };
 </script>

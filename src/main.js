@@ -39,7 +39,7 @@ Vue.prototype.$cart = [];
 // Librairies graphiques
 Vue.use(Vuetify);
 
-new Vue({
+var vm = new Vue({
   el: "#app",
   router: Router,
   render: h => h(App)

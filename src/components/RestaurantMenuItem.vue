@@ -8,27 +8,23 @@
         <v-list-tile-title>{{ meal.strMeal }}</v-list-tile-title>
         <v-list-tile-sub-title>{{ meal.price }} €</v-list-tile-sub-title>
       </v-list-tile-content>
-
-      <v-list-tile-action>
-        <v-btn icon ripple @click="addToCart(meal)">
-          <v-icon color="green lighten-1">add</v-icon>
-          <!-- <input type="number" v-model="quantity" min="0"> -->
-        </v-btn>
-      </v-list-tile-action>
-      <v-list-tile-action>
-        <v-btn icon ripple @click="deleteToCart(meal)">
-          <v-icon color="red lighten-1">remove</v-icon>
-        </v-btn>
-      </v-list-tile-action>
+      <app-menu-item-quantity
+        v-on:change-quantity="setQuantity($event)"
+        v-on:add-cart="addToCart(meal)"
+      ></app-menu-item-quantity>
     </v-list-tile>
   </div>
 </template>
 
 <script>
 import Utils from "../Utils.js";
+import RestaurantMenuItemQt from "./RestaurantMenuItemQt.vue";
 
 export default {
   name: "app-restaurant-menu-item",
+  components: {
+    "app-menu-item-quantity": RestaurantMenuItemQt
+  },
   props: ["item"],
   data() {
     return {
@@ -38,9 +34,13 @@ export default {
   mounted() {},
   methods: {
     addToCart(meal) {
-      console.log("add to cart");
-      this.$cart.push(meal);
+      this.$cart.push({ meal: meal, quantity: this.quantity });
+
       console.log(meal);
+    },
+    setQuantity(event) {
+      this.quantity = event.quantity;
+      console.log("Quantité = " + this.quantity);
     }
   }
 };
