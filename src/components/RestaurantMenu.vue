@@ -10,9 +10,13 @@
             no-action
           >
             <v-list-tile slot="activator">
+              <v-list-tile-action v-for="item in items">
+                  <v-icon>{{ item.action }}</v-icon>
+                </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.category }}</v-list-tile-title>
               </v-list-tile-content>
+              
             </v-list-tile>
 
             <app-restaurant-menu-item :item="item"></app-restaurant-menu-item>
@@ -34,7 +38,10 @@ export default {
   },
   data() {
     return {
-      menu: []
+      menu: [],
+      items :[
+        {action : 'restaurant_menu'}
+      ]
     };
   },
   mounted() {

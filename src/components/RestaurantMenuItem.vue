@@ -6,14 +6,15 @@
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>{{ meal.strMeal }}</v-list-tile-title>
-          <!-- <v-list-tile-sub-title>{{ generateRandomPrice() }} € </v-list-tile-sub-title> -->
+          <v-list-tile-sub-title>{{ meal.price }} € </v-list-tile-sub-title>
       </v-list-tile-content>
+
       <v-list-tile-action>
               <v-btn icon ripple>
                 <v-icon color="green lighten-1">add</v-icon>
-                <input type="number" v-model="quantity">
+                <!-- <input type="number" v-model="quantity" min="0"> -->
               </v-btn>
-            </v-list-tile-action>
+      </v-list-tile-action>
     </v-list-tile>
   </div>
 </template>
@@ -27,7 +28,8 @@ export default {
   data() {
     return {
       price : 0,
-      quantity: 0
+      quantity: 0,
+      
     };
   },
   mounted() {},
