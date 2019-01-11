@@ -15,6 +15,11 @@
           <!-- <input type="number" v-model="quantity" min="0"> -->
         </v-btn>
       </v-list-tile-action>
+      <v-list-tile-action>
+        <v-btn icon ripple @click="deleteToCart(meal)">
+          <v-icon color="red lighten-1">remove</v-icon>
+        </v-btn>
+      </v-list-tile-action>
     </v-list-tile>
   </div>
 </template>
@@ -35,6 +40,7 @@ export default {
     addToCart(meal) {
       console.log("add to cart");
       this.$cart.push(meal);
+      console.log(meal);
     }
   }
 };

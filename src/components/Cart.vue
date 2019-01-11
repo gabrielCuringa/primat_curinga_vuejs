@@ -5,10 +5,15 @@
         <v-list-tile v-for="meal in $cart" :key="meal.idMeal">
           <v-list-tile-content>
             <v-list-tile-title>{{ meal.strMeal }}</v-list-tile-title>
+
           </v-list-tile-content>
         </v-list-tile>
+              <app-commande>
+        <v-btn slot="activator" color="primary" dark>Valider ma commande</v-btn>
+      </app-commande>
       </v-list>
-    </v-bottom-sheet>
+
+  </v-bottom-sheet>
     <!-- Button shopping cart-->
     <v-btn fixed dark fab bottom right color="blue" @click="activated=!activated">
       <!--<v-badge left>
@@ -20,6 +25,7 @@
 </template>
 
 <script>
+import Commande from "./Commande.vue";
 export default {
   mounted() {},
   data() {
@@ -27,7 +33,9 @@ export default {
       activated: false
     };
   },
-  methods: {}
+  methods: {
+    
+  }
 };
 </script>
 

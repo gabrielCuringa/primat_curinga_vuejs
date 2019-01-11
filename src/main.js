@@ -8,6 +8,7 @@ import Router from "./router/index.js";
 import Cart from "./components/Cart.vue";
 import FindRestaurant from "./components/FindRestaurant.vue";
 import EditRestaurant from "./components/EditRestaurant.vue";
+import Commande from "./components/Commande.vue";
 
 //Map import
 import { L, LMap, LTileLayer, LMarker } from "vue2-leaflet";
@@ -20,6 +21,7 @@ Vue.component("l-marker", LMarker);
 Vue.component("app-cart", Cart);
 Vue.component("app-find-restaurant", FindRestaurant);
 Vue.component("app-edit-restaurant", EditRestaurant);
+Vue.component("app-commande", Commande);
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -28,6 +30,7 @@ L.Icon.Default.mergeOptions({
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
 });
+
 
 //Global variable
 Vue.API = Vue.prototype.API = new Api();

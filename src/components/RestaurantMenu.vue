@@ -3,6 +3,7 @@
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-list>
+
           <v-list-group
             v-for="item, index of menu"
             v-model="item.active"
