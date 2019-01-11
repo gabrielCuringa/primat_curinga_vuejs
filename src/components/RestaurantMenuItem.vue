@@ -6,14 +6,14 @@
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>{{ meal.strMeal }}</v-list-tile-title>
-          <v-list-tile-sub-title>{{ meal.price }} € </v-list-tile-sub-title>
+        <v-list-tile-sub-title>{{ meal.price }} €</v-list-tile-sub-title>
       </v-list-tile-content>
 
       <v-list-tile-action>
-              <v-btn icon ripple>
-                <v-icon color="green lighten-1">add</v-icon>
-                <!-- <input type="number" v-model="quantity" min="0"> -->
-              </v-btn>
+        <v-btn icon ripple @click="addToCart(meal)">
+          <v-icon color="green lighten-1">add</v-icon>
+          <!-- <input type="number" v-model="quantity" min="0"> -->
+        </v-btn>
       </v-list-tile-action>
     </v-list-tile>
   </div>
@@ -27,17 +27,14 @@ export default {
   props: ["item"],
   data() {
     return {
-      price : 0,
-      quantity: 0,
-      
+      quantity: 0
     };
   },
   mounted() {},
-  methods : {
-    generateRandomPrice(){
-      var random = Utils.random(7,18);
-      this.price = random;
-      return random;
+  methods: {
+    addToCart(meal) {
+      console.log("add to cart");
+      this.$cart.push(meal);
     }
   }
 };

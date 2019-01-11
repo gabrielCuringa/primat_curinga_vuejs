@@ -31,6 +31,7 @@ L.Icon.Default.mergeOptions({
 
 //Global variable
 Vue.API = Vue.prototype.API = new Api();
+Vue.prototype.$cart = [];
 
 // Librairies graphiques
 Vue.use(Vuetify);
